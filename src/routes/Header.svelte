@@ -2,13 +2,25 @@
 	import ModeSwitcher from '$lib/components/ModeSwitcher.svelte';
 </script>
 
-<header class="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
-	<nav
-		class="hidden w-full flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6"
-	>
-		<a href="/" class="flex w-full justify-center">
-			<h1 class="text-2xl font-bold">Random Character Generator</h1>
-		</a>
+<header
+	class="sticky top-0 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6"
+>
+	<a href="/" class="flex items-center">
+		<h1 class="text-lg font-bold sm:text-xl md:text-2xl">Random Character Generator</h1>
+	</a>
+
+	<nav class="flex items-center gap-4">
 		<ModeSwitcher />
+
+		<!-- Mobile menu button (if needed) -->
+		<!-- 	  
+	  <button class="md:hidden">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		  <line x1="3" y1="12" x2="21" y2="12"></line>
+		  <line x1="3" y1="6" x2="21" y2="6"></line>
+		  <line x1="3" y1="18" x2="21" y2="18"></line>
+		</svg>
+	  </button>
+	  -->
 	</nav>
 </header>

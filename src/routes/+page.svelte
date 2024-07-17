@@ -2,11 +2,10 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import Slider from '$lib/components/ui/slider/slider.svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 	import { writable } from 'svelte/store';
 	import * as Card from '$lib/components/ui/card';
-	import { DCHeroList, MCUHeroList, UFC } from './lists';
+	import { DCHeroList, MCUHeroList, UFC, Disney, HP, SW, BS, Countries } from './lists';
 	import * as Popover from '$lib/components/ui/popover';
 	import RefreshCw from 'lucide-svelte/icons/refresh-cw';
 
@@ -19,7 +18,7 @@
 	let rollValue = 2;
 	let winnerJSON: string[][] = [];
 	let charNames: string[] = [];
-	let charsCopy: string[] = []
+	let charsCopy: string[] = [];
 
 	const spin = (players: number, rolls: number, chars: string[]) => {
 		console.log(chars);
@@ -50,15 +49,23 @@
 
 <svelte:head>
 	<title>Character Generator</title>
+	<meta name="description" content="Site for spinning random characters written in the list">
 </svelte:head>
 
 <main class="container flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-	<Label>Pre-made lists</Label>
-	<div>
-		<Button on:click={() => spin(3, 5, DCHeroList)}>DEV</Button>
-		<Button on:click={() => replaceTextValue(DCHeroList)}>DC Heroes</Button>
-		<Button on:click={() => replaceTextValue(MCUHeroList)}>Marvel Heroes</Button>
-		<Button on:click={() => replaceTextValue(UFC)}>UFC/MMA Fighters</Button>		
+	<div class="mb-6">
+		<Label class="mb-2 block text-lg font-semibold">Pre-made lists</Label>
+		<div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+			<!-- <Button class="w-full" on:click={() => spin(3, 5, DCHeroList)}>DEV</Button> -->
+			<Button class="w-full" on:click={() => replaceTextValue(DCHeroList)}>DC Heroes</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(MCUHeroList)}>Marvel Heroes</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(UFC)}>UFC/MMA Fighters</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(Disney)}>Disney/Pixar Movies</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(HP)}>Harry Potter Characters</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(SW)}>Star Wars Characters</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(BS)}>Brawl Stars Fighters</Button>
+			<Button class="w-full" on:click={() => replaceTextValue(Countries)}>Countries</Button>
+		</div>
 	</div>
 	<div class="flex flex-col flex-wrap justify-center gap-2">
 		<div class="flex flex-row items-center gap-3">
@@ -103,55 +110,55 @@
 				type="number"
 				aria-valuemin={1}
 				required
-				class="max-h-[2%] max-w-[15%] flex flex-wrap"
+				class="flex max-h-[2%] max-w-[15%] flex-wrap"
 			></Input>
 		</div>
 	</div>
-	<div class="flex flex-col md:flex-row gap-8">
+	<div class="flex flex-col gap-8 md:flex-row">
 		<form class="w-full md:w-1/3">
-		  <div
-			class="grid w-full gap-4 text-sm after:invisible after:max-h-[700px] after:min-h-[100px] after:whitespace-pre-wrap after:border after:px-3.5 after:py-2.5 after:text-inherit after:content-[attr(data-cloned-val)_'_'] after:[grid-area:1/1/2/2] [&>textarea]:resize-y [&>textarea]:overflow-x-auto [&>textarea]:text-inherit [&>textarea]:[grid-area:1/1/2/2]"
-			data-cloned-val={charValues}
-		  >
-			<Textarea
-			  bind:value={charValues}
-			  class="min-h-48"
-			  required
-			  placeholder="Enter each character on a new line here..."
-			/>
-			<Button
-			  class="w-full"
-			  disabled={charValues.length === 0}
-			  type="submit"
-			  on:click={() => spin(playerValue, rollValue, $characters)}
+			<div
+				class="grid w-full gap-4 text-sm after:invisible after:max-h-[700px] after:min-h-[100px] after:whitespace-pre-wrap after:border after:px-3.5 after:py-2.5 after:text-inherit after:content-[attr(data-cloned-val)_'_'] after:[grid-area:1/1/2/2] [&>textarea]:resize-y [&>textarea]:overflow-x-auto [&>textarea]:text-inherit [&>textarea]:[grid-area:1/1/2/2]"
+				data-cloned-val={charValues}
 			>
-			  Spin
-			</Button>
-		  </div>
+				<Textarea
+					bind:value={charValues}
+					class="min-h-48"
+					required
+					placeholder="Enter each character on a new line here..."
+				/>
+				<Button
+					class="w-full"
+					disabled={charValues.length === 0}
+					type="submit"
+					on:click={() => spin(playerValue, rollValue, $characters)}
+				>
+					Spin
+				</Button>
+			</div>
 		</form>
-		
-		<div class="w-full md:w-2/3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		  {#each winnerJSON as player, i}
-			<Card.Root>
-			  <Card.Header>
-				{#if charNames[i] === undefined}
-				  <Card.Title>Player {i + 1}</Card.Title>
-				{:else}
-				  <Card.Title>{charNames[i]}</Card.Title>
-				{/if}
-			  </Card.Header>
-			  <Card.Content>
-				{#each player as item, index}
-				  <div class="flex items-center justify-between gap-2 mb-2">
-					<p class="truncate flex-grow">{item}</p>
-					<Button variant="secondary" on:click={() => reSpin(i, index)} class="flex-shrink-0">
-					  <RefreshCw class="h-4 w-4" />
-					</Button>
-				  </div>
-				{/each}
-			  </Card.Content>
-			</Card.Root>
-		  {/each}
+
+		<div class="grid w-full gap-4 sm:grid-cols-2 md:w-2/3 lg:grid-cols-3">
+			{#each winnerJSON as player, i}
+				<Card.Root>
+					<Card.Header>
+						{#if charNames[i] === undefined}
+							<Card.Title>Player {i + 1}</Card.Title>
+						{:else}
+							<Card.Title>{charNames[i]}</Card.Title>
+						{/if}
+					</Card.Header>
+					<Card.Content>
+						{#each player as item, index}
+							<div class="mb-2 flex items-center justify-between gap-2">
+								<p class="flex-grow truncate">{item}</p>
+								<Button variant="secondary" on:click={() => reSpin(i, index)} class="flex-shrink-0">
+									<RefreshCw class="h-4 w-4" />
+								</Button>
+							</div>
+						{/each}
+					</Card.Content>
+				</Card.Root>
+			{/each}
 		</div>
-	  </div>
+	</div>
 </main>
