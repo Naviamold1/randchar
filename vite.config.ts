@@ -45,14 +45,14 @@ export default defineConfig({
 				screenshots: [
 					{
 					 "src": "Screenshot_1.png",
-					  "sizes": "1220x1441",
+					  "sizes": "1441x1220",
 					  "type": "image/png",
 					  "form_factor": "wide",
 					  "label": "Home Page"
 					},
 					{
 					 "src": "Screenshot_2.png",
-					  "sizes": "701x378",
+					  "sizes": "378x701",
 					  "type": "image/png",
 					  "form_factor": "narrow",
 					  "label": "Home Page on Mobile"
